@@ -1,0 +1,205 @@
+swagger: "2.0"
+info:
+  description: "Championship manager webserver"
+  version: "0.0.1"
+  title: "Championship manager webserver"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "shassino@gmail.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+paths:
+  /:
+    get:
+      tags:
+      - "pet"
+      summary: "root element"
+      operationId: "api.root"
+      responses:
+        200:
+          description: "root element"
+          schema:
+            type: "string"
+  /pet:
+    get:
+      tags:
+      - "pet"
+      summary: "get pet list"
+      operationId: "api.lista"
+      responses:
+        200:
+          description: "pet list"
+          schema:
+            type: "string"
+  /user/login:
+    post:
+      tags:
+      - "user"
+      summary: "Logs user into the system"
+      description: ""
+      operationId: "api_user.loginUser"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "username"
+        in: "query"
+        description: "The user name for login"
+        required: true
+        type: "string"
+      - name: "password"
+        in: "query"
+        description: "The password for login in clear text"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "session Id"
+          schema:
+            type: "string"
+        400:
+          description: "Invalid username/password supplied"
+  /{sid}:
+    delete:
+      tags:
+      - "user"
+      summary: "Logs out current logged in user session"
+      description: ""
+      operationId: "api_user.logoutUser"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "sid"
+        description: "session id"
+        required: true
+        type: "string"
+      responses:
+        default:
+          description: "successful operation"
+  /{sid}/user:
+    post:
+      tags:
+      - "user"
+      summary: "Create user"
+      description: "This can only be done by the logged in user."
+      operationId: "api_user.createUser"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "sid"
+        description: "session id"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Created user object"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        default:
+          description: "successful operation"
+  /{sid}/user/{username}:
+    get:
+      tags:
+      - "user"
+      summary: "Get user by user name"
+      description: ""
+      operationId: "api_user.getUserByName"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "sid"
+        description: "session id"
+        required: true
+        type: "string"
+      - name: "username"
+        in: "path"
+        description: "The name that needs to be fetched. Use user1 for testing. "
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/User"
+        400:
+          description: "Invalid username supplied"
+        404:
+          description: "User not found"
+    put:
+      tags:
+      - "user"
+      summary: "Updated user"
+      description: "This can only be done by the logged in user."
+      operationId: "api_user.updateUser"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "sid"
+        description: "session id"
+        required: true
+        type: "string"
+      - name: "username"
+        in: "path"
+        description: "name that need to be updated"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Updated user object"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        400:
+          description: "Invalid user supplied"
+        404:
+          description: "User not found"
+    delete:
+      tags:
+      - "user"
+      summary: "Delete user"
+      description: "This can only be done by the logged in user."
+      operationId: "api_user.deleteUser"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "sid"
+        description: "session id"
+        required: true
+        type: "string"
+      - name: "username"
+        in: "path"
+        description: "The name that needs to be deleted"
+        required: true
+        type: "string"
+      responses:
+        400:
+          description: "Invalid username supplied"
+        404:
+          description: "User not found"
+definitions:
+  User:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      username:
+        type: "string"
+      email:
+        type: "string"
+      password:
+        type: "string"
+      phone:
+        type: "string"
+      userStatus:
+        type: "integer"
+        format: "int32"
+        description: "User Status"
