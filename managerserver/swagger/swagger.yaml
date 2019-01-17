@@ -188,16 +188,11 @@ definitions:
   User:
     type: "object"
     properties:
-      id:
-        type: "integer"
-        format: "int64"
       username:
         type: "string"
       email:
         type: "string"
       password:
-        type: "string"
-      phone:
         type: "string"
       userStatus:
         type: "integer"

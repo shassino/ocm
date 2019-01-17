@@ -1,2 +1,5 @@
-1) install pip
-2) python3 -m pip install connexion
+install pip
+python3 -m pip install connexion
+python3 -m pip install pymysql
+#python3 -m pip install simple-crypt
+python3 -m pip install cryptography
