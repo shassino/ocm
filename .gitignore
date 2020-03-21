@@ -1,7 +1,7 @@
 node_modules
 ng
 package.json
-yarn.lock
+/yarn.lock
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
