@@ -1,0 +1,16 @@
+mat-card {
+    width: calc(100% - 70px);
+    height: calc(100% - 70px);
+}
+
+mat-card-content {
+    height: calc(100% - 95px);
+    background-color: aqua;
+    overflow: auto;
+}
+
+.bottom {
+    position: absolute;
+    bottom: 15px;
+    right: 7px;
+}
