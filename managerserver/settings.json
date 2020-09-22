@@ -1,1 +1,7 @@
-{"DB_NAME": "test", "DB_USER": "test", "DB_PASSWORD": "test", "DB_HOST": "127.0.0.1", "CRYPTO_PWD": "jM4BtAQMaSSuaejajdjGGupSOZN-bExJh2F8_QylcMI="}
+{
+  "DB_NAME": "ocm",
+  "DB_USER": "ocm",
+  "DB_PASSWORD": "ocm",
+  "DB_HOST": "127.0.0.1",
+  "CRYPTO_PWD": "jM4BtAQMaSSuaejajdjGGupSOZN-bExJh2F8_QylcMI="
+}

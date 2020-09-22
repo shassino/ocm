@@ -38,7 +38,7 @@ paths:
       - "user"
       summary: "Logs user into the system"
       description: ""
-      operationId: "api_user.loginUser"
+      operationId: "api_user.user_login"
       produces:
       - "application/json"
       parameters:
@@ -65,7 +65,7 @@ paths:
       - "user"
       summary: "Logs out current logged in user session"
       description: ""
-      operationId: "api_user.logoutUser"
+      operationId: "api_user.user_logout"
       produces:
       - "application/json"
       parameters:
@@ -83,7 +83,7 @@ paths:
       - "user"
       summary: "Create user"
       description: "This can only be done by the logged in user."
-      operationId: "api_user.createUser"
+      operationId: "api_user.user_create"
       produces:
       - "application/json"
       parameters:
@@ -107,7 +107,7 @@ paths:
       - "user"
       summary: "Get user by user name"
       description: ""
-      operationId: "api_user.getUserByName"
+      operationId: "api_user.user_get_by_name"
       produces:
       - "application/json"
       parameters:
@@ -135,7 +135,7 @@ paths:
       - "user"
       summary: "Updated user"
       description: "This can only be done by the logged in user."
-      operationId: "api_user.updateUser"
+      operationId: "api_user.user_update"
       produces:
       - "application/json"
       parameters:
@@ -165,7 +165,7 @@ paths:
       - "user"
       summary: "Delete user"
       description: "This can only be done by the logged in user."
-      operationId: "api_user.deleteUser"
+      operationId: "api_user.user_delete"
       produces:
       - "application/json"
       parameters:
