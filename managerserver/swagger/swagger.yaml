@@ -1,8 +1,8 @@
 swagger: "2.0"
 info:
-  description: "Championship manager webserver"
+  description: "Online championship manager webserver"
   version: "0.0.1"
-  title: "Championship manager webserver"
+  title: "OCM Server"
   termsOfService: "http://swagger.io/terms/"
   contact:
     email: "shassino@gmail.com"
@@ -10,28 +10,6 @@ info:
     name: "Apache 2.0"
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
 paths:
-  /:
-    get:
-      tags:
-      - "pet"
-      summary: "root element"
-      operationId: "api.root"
-      responses:
-        200:
-          description: "root element"
-          schema:
-            type: "string"
-  /pet:
-    get:
-      tags:
-      - "pet"
-      summary: "get pet list"
-      operationId: "api.lista"
-      responses:
-        200:
-          description: "pet list"
-          schema:
-            type: "string"
   /user/login:
     post:
       tags:
@@ -118,7 +96,7 @@ paths:
         type: "string"
       - name: "username"
         in: "path"
-        description: "The name that needs to be fetched. Use user1 for testing. "
+        description: "username"
         required: true
         type: "string"
       responses:
@@ -130,7 +108,7 @@ paths:
           description: "Invalid username supplied"
         404:
           description: "User not found"
-    put:
+    post:
       tags:
       - "user"
       summary: "Updated user"
@@ -184,6 +162,926 @@ paths:
           description: "Invalid username supplied"
         404:
           description: "User not found"
+  /{sid}/user/all:
+    get:
+      tags:
+        - "user"
+      summary: "Get all users"
+      description: ""
+      operationId: "api_user.user_get_all"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "sid"
+          description: "session id"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/User"
+        400:
+          description: "Error"
+        404:
+          description: "sid not found"
+  /{sid}/user/{username}/team/all:
+    get:
+      tags:
+          - "user"
+          - "team"
+      summary: "list the user teams"
+      description: ""
+      operationId: "api.team_get_user_all"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "sid"
+          description: "session id"
+          required: true
+          type: "string"
+        - in: "path"
+          name: "username"
+          description: "username"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              type: "integer"
+        400:
+          description: "Sid not found"
+        404:
+          description: "User not found"
+  /{sid}/user/{username}/stats:
+    get:
+      tags:
+          - "user"
+          - "team"
+      summary: "list the user stats"
+      description: ""
+      operationId: "api.user_stats"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "sid"
+          description: "session id"
+          required: true
+          type: "string"
+        - in: "path"
+          name: "username"
+          description: "username"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/UserStats"
+        400:
+          description: "Sid not found"
+        404:
+          description: "User not found"
+  /{sid}/team/{tid}:
+    get:
+      tags:
+          - "team"
+      summary: "get team by id"
+      description: ""
+      operationId: "api.team_get"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "sid"
+          description: "session id"
+          required: true
+          type: "string"
+        - in: "path"
+          name: "tid"
+          description: "team id"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Team"
+        400:
+          description: "Sid not found"
+        404:
+          description: "Tid not found"
+    delete:
+      tags:
+          - "team"
+      summary: "delete team by id"
+      description: ""
+      operationId: "api.team_delete"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "sid"
+          description: "session id"
+          required: true
+          type: "string"
+        - in: "path"
+          name: "tid"
+          description: "team id"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "Sid not found"
+        404:
+          description: "Tid not found"
+    post:
+      tags:
+          - "team"
+      summary: "update team by id"
+      description: ""
+      operationId: "api.team_update"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "sid"
+          description: "session id"
+          required: true
+          type: "string"
+        - in: "path"
+          name: "tid"
+          description: "team id"
+          required: true
+          type: "string"
+        - in: "body"
+          name: "team"
+          schema:
+            type: "object"
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "Sid not found"
+        404:
+          description: "Tid not found"
+  /{sid}/user/{username}/team/:
+    post:
+      tags:
+          - "user"
+          - "team"
+      summary: "create a new team"
+      description: ""
+      operationId: "api.team_create"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "sid"
+          description: "session id"
+          required: true
+          type: "string"
+        - in: "path"
+          name: "username"
+          description: ""
+          required: true
+          type: "string"
+        - in: "body"
+          name: "team"
+          schema:
+            type: "object"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            description: "team id"
+            type: "integer"
+        400:
+          description: "Sid not found"
+        404:
+          description: "Tid not found"
+  /{sid}/team/all:
+    get:
+      tags:
+          - "team"
+      summary: "get team by id"
+      description: ""
+      operationId: "api.team_get_all"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "sid"
+          description: "session id"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Team"
+        400:
+          description: "Sid not found"
+        404:
+          description: "Tid not found"
+  /{sid}/player/{pid}:
+    get:
+      tags:
+          - "player"
+      summary: "get player by id"
+      description: ""
+      operationId: "api.player_get"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "sid"
+          description: "session id"
+          required: true
+          type: "string"
+        - in: "path"
+          name: "pid"
+          description: "player id"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Player"
+        400:
+          description: "Sid not found"
+        404:
+          description: "Pid not found"
+    delete:
+      tags:
+          - "player"
+      summary: "delete player by id"
+      description: ""
+      operationId: "api.player_delete"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "sid"
+          description: "session id"
+          required: true
+          type: "string"
+        - in: "path"
+          name: "pid"
+          description: "player id"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "Sid not found"
+        404:
+          description: "Pid not found"
+    post:
+      tags:
+          - "player"
+      summary: "update player by id"
+      description: ""
+      operationId: "api.player_update"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "sid"
+          description: "session id"
+          required: true
+          type: "string"
+        - in: "path"
+          name: "pid"
+          description: "player id"
+          required: true
+          type: "string"
+        - in: "body"
+          name: "player"
+          schema:
+            $ref: "#/definitions/Player"
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "Sid not found"
+        404:
+          description: "Pid not found"
+  /{sid}/player:
+    post:
+      tags:
+          - "player"
+      summary: "new player"
+      description: ""
+      operationId: "api.player_new"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "sid"
+          description: "session id"
+          required: true
+          type: "string"
+        - in: "body"
+          name: "player"
+          schema:
+            $ref: "#/definitions/Player"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "integer"
+            description: "player id"
+        400:
+          description: "Sid not found"
+        404:
+          description: "Pid not found"
+  /{sid}/player/{pid}/stats:
+    get:
+      tags:
+          - "player"
+      summary: "get player by id"
+      description: ""
+      operationId: "api.player_get_stats"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "sid"
+          description: "session id"
+          required: true
+          type: "string"
+        - in: "path"
+          name: "pid"
+          description: "player id"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/PlayerStats"
+        400:
+          description: "Sid not found"
+        404:
+          description: "Pid not found"
+  /{sid}/tournament/{tid}:
+    get:
+      tags:
+          - "tournament"
+      summary: "get tournament by id"
+      description: ""
+      operationId: "api.tournament_get"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "sid"
+          description: "session id"
+          required: true
+          type: "string"
+        - in: "path"
+          name: "tid"
+          description: "tournament id"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Tournament"
+        400:
+          description: "Sid not found"
+        404:
+          description: "Pid not found"
+    delete:
+      tags:
+          - "tournament"
+      summary: "delete tournament by id"
+      description: ""
+      operationId: "api.tournament_delete"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "sid"
+          description: "session id"
+          required: true
+          type: "string"
+        - in: "path"
+          name: "tid"
+          description: "tournament id"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "Sid not found"
+        404:
+          description: "Pid not found"
+    post:
+      tags:
+          - "tournament"
+      summary: "update tournament by id"
+      description: ""
+      operationId: "api.tournament_update"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "sid"
+          description: "session id"
+          required: true
+          type: "string"
+        - in: "path"
+          name: "tid"
+          description: "tournament id"
+          required: true
+          type: "string"
+        - in: "body"
+          name: "tournament"
+          schema:
+            $ref: "#/definitions/Tournament"
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "Sid not found"
+        404:
+          description: "Pid not found"
+  /{sid}/tournament:
+    post:
+      tags:
+          - "tournament"
+      summary: "new tournament"
+      description: ""
+      operationId: "api.tournament_new"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "sid"
+          description: "session id"
+          required: true
+          type: "string"
+        - in: "body"
+          name: "tournament"
+          schema:
+            $ref: "#/definitions/Tournament"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "integer"
+            description: "tournament id"
+        400:
+          description: "Sid not found"
+        404:
+          description: "Pid not found"
+  /{sid}/tournament/{tid}/stats:
+    get:
+      tags:
+          - "tournament"
+      summary: "get tournament stats"
+      description: ""
+      operationId: "api.tournament_get_stats"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "sid"
+          description: "session id"
+          required: true
+          type: "string"
+        - in: "path"
+          name: "tid"
+          description: "tournament id"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/TournamentStats"
+        400:
+          description: "Sid not found"
+        404:
+          description: "Pid not found"
+  /{sid}/tournament/{tid}/group/{gid}:
+    get:
+      tags:
+          - "group"
+          - "tournament"
+      summary: "get group by id"
+      description: ""
+      operationId: "api.group_get"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "sid"
+          description: "session id"
+          required: true
+          type: "string"
+        - in: "path"
+          name: "tid"
+          description: "tournament id"
+          required: true
+          type: "string"
+        - in: "path"
+          name: "gid"
+          description: "group id"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Group"
+        400:
+          description: "Sid not found"
+        404:
+          description: "Pid not found"
+    delete:
+      tags:
+          - "group"
+          - "tournament"
+      summary: "delete group by id"
+      description: ""
+      operationId: "api.group_delete"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "sid"
+          description: "session id"
+          required: true
+          type: "string"
+        - in: "path"
+          name: "tid"
+          description: "tournament id"
+          required: true
+          type: "string"
+        - in: "path"
+          name: "gid"
+          description: "group id"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "Sid not found"
+        404:
+          description: "Pid not found"
+    post:
+      tags:
+          - "group"
+          - "tournament"
+      summary: "delete group by id"
+      description: ""
+      operationId: "api.group_update"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "sid"
+          description: "session id"
+          required: true
+          type: "string"
+        - in: "path"
+          name: "tid"
+          description: "tournament id"
+          required: true
+          type: "string"
+        - in: "path"
+          name: "gid"
+          description: "group id"
+          required: true
+          type: "string"
+        - in: "body"
+          name: "group"
+          schema:
+            $ref: "#/definitions/Group"
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "Sid not found"
+        404:
+          description: "Pid not found"
+  /{sid}/tournament/{tid}/group/:
+    post:
+      tags:
+          - "group"
+          - "tournament"
+      summary: "delete group by id"
+      description: ""
+      operationId: "api.group_new"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "sid"
+          description: "session id"
+          required: true
+          type: "string"
+        - in: "path"
+          name: "tid"
+          description: "tournament id"
+          required: true
+          type: "string"
+        - in: "body"
+          name: "group"
+          schema:
+            $ref: "#/definitions/Group"
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "Sid not found"
+        404:
+          description: "Pid not found"
+  /{sid}/tournament/{tid}/group/all:
+    get:
+      tags:
+          - "group"
+          - "tournament"
+      summary: "get all group"
+      description: ""
+      operationId: "api.group_get_all"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "sid"
+          description: "session id"
+          required: true
+          type: "string"
+        - in: "path"
+          name: "tid"
+          description: "tournament id"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Group"
+        400:
+          description: "Sid not found"
+        404:
+          description: "Pid not found"
+  /{sid}/tournament/{tid}/group/{gid}/leaderboard:
+    get:
+      tags:
+          - "group"
+          - "tournament"
+      summary: "get group leaderboard"
+      description: ""
+      operationId: "api.group_get_leaderboard"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "sid"
+          description: "session id"
+          required: true
+          type: "string"
+        - in: "path"
+          name: "tid"
+          description: "tournament id"
+          required: true
+          type: "string"
+        - in: "path"
+          name: "gid"
+          description: "group id"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/GroupLeaderboard"
+        400:
+          description: "Sid not found"
+        404:
+          description: "Pid not found"
+  /{sid}/tournament/{tid}/group/{gid}/stats:
+    get:
+      tags:
+          - "group"
+          - "tournament"
+      summary: "get group stats"
+      description: ""
+      operationId: "api.group_get_stats"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "sid"
+          description: "session id"
+          required: true
+          type: "string"
+        - in: "path"
+          name: "tid"
+          description: "tournament id"
+          required: true
+          type: "string"
+        - in: "path"
+          name: "gid"
+          description: "group id"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/GroupStats"
+        400:
+          description: "Sid not found"
+        404:
+          description: "Pid not found"
+  /{sid}/tournament/{tid}/group/{gid}/match/{mid}:
+    get:
+      tags:
+          - "group"
+          - "tournament"
+          - "match"
+      summary: "get group stats"
+      description: ""
+      operationId: "api.match_get"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "sid"
+          description: "session id"
+          required: true
+          type: "string"
+        - in: "path"
+          name: "tid"
+          description: "tournament id"
+          required: true
+          type: "string"
+        - in: "path"
+          name: "gid"
+          description: "group id"
+          required: true
+          type: "string"
+        - in: "path"
+          name: "mid"
+          description: "match id"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Match"
+        400:
+          description: "Sid not found"
+        404:
+          description: "Pid not found"
+    delete:
+      tags:
+          - "group"
+          - "tournament"
+          - "match"
+      summary: "get group stats"
+      description: ""
+      operationId: "api.match_delete"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "sid"
+          description: "session id"
+          required: true
+          type: "string"
+        - in: "path"
+          name: "tid"
+          description: "tournament id"
+          required: true
+          type: "string"
+        - in: "path"
+          name: "gid"
+          description: "group id"
+          required: true
+          type: "string"
+        - in: "path"
+          name: "mid"
+          description: "match id"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "Sid not found"
+        404:
+          description: "Pid not found"
+    post:
+      tags:
+          - "group"
+          - "tournament"
+          - "match"
+      summary: "get group stats"
+      description: ""
+      operationId: "api.match_update"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "sid"
+          description: "session id"
+          required: true
+          type: "string"
+        - in: "path"
+          name: "tid"
+          description: "tournament id"
+          required: true
+          type: "string"
+        - in: "path"
+          name: "gid"
+          description: "group id"
+          required: true
+          type: "string"
+        - in: "path"
+          name: "mid"
+          description: "match id"
+          required: true
+          type: "string"
+        - in: "body"
+          name: "match"
+          schema:
+            $ref: "#/definitions/Match"
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "Sid not found"
+        404:
+          description: "Pid not found"
+  /{sid}/tournament/{tid}/group/{gid}/match/:
+    post:
+      tags:
+          - "group"
+          - "tournament"
+          - "match"
+      summary: "get group stats"
+      description: ""
+      operationId: "api.match_new"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "sid"
+          description: "session id"
+          required: true
+          type: "string"
+        - in: "path"
+          name: "tid"
+          description: "tournament id"
+          required: true
+          type: "string"
+        - in: "path"
+          name: "gid"
+          description: "group id"
+          required: true
+          type: "string"
+        - in: "body"
+          name: "match"
+          schema:
+            $ref: "#/definitions/Match"
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "Sid not found"
+        404:
+          description: "Pid not found"
 definitions:
   User:
     type: "object"
@@ -194,7 +1092,25 @@ definitions:
         type: "string"
       password:
         type: "string"
-      userStatus:
+      level:
         type: "integer"
-        format: "int32"
-        description: "User Status"
+  Team:
+    type: "object"
+  UserStats:
+    type: "object"
+  Player:
+    type: "object"
+  PlayerStats:
+    type: "object"
+  Tournament:
+    type: "object"
+  TournamentStats:
+    type: "object"
+  Group:
+    type: "object"
+  GroupLeaderboard:
+    type: "object"
+  GroupStats:
+    type: "object"
+  Match:
+    type: "object"

@@ -1,4 +1,5 @@
 from flask import jsonify
+from settings import config, cursor
 
 
 def lista():
